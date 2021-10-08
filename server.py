@@ -1,8 +1,12 @@
+import web_data.puller as puller
 import fileio.fileio as files
 import random
 import os
 import statistics
 import pickle
+
+
+test_url = "https://www.york.ac.uk/teaching/cws/wws/webpage1.html"
 
 
 def input(prompt='>>> ', input_funct=input):
@@ -27,13 +31,13 @@ def create_simple_numbers(file_name="untitled", list_of_values=[random.randint(0
 def print_choices():
     print("""
   1 ) Test
-  2 ) Test 2
+  2 ) Web Test
   """)
 
 
 def test():
     choice = 0
-    possible_choices = ["1"]
+    possible_choices = ["1", "2"]
     while choice not in possible_choices:
         print("What would you like to do?")
         print_choices()
@@ -43,8 +47,16 @@ def test():
         create_simple_numbers("test", list_of_values=[
                               random.randint(0, 100) for i in range(1000)])
         print("Done")
+    elif choice == "2":
+        web_test()
 
     clear()
+
+
+def web_test(url=test_url):
+    data_sheet = puller.get_all_elements_in_page(url)
+    [print(data.text) for data in data_sheet]
+    print("done")
 
 
 def call():
