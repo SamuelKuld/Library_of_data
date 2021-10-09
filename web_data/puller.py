@@ -1,7 +1,5 @@
-import os
 import bs4
 import requests
-import socket
 
 
 test_url = "https://www.york.ac.uk/teaching/cws/wws/webpage1.html"

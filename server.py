@@ -3,7 +3,6 @@ import fileio.fileio as files
 import random
 import os
 import statistics
-import pickle
 
 
 test_url = "https://www.york.ac.uk/teaching/cws/wws/webpage1.html"
