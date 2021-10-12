@@ -10,6 +10,7 @@ def clear():
 def print_choices():
     print("""
     1 ) Test
+    2 ) Get Images
     """)
 
 
@@ -41,8 +42,21 @@ def test():
         input()
 
 
+def get_images():
+    print("Grabbing all current images")
+    if not files.is_file_name_in_directory("images"):
+        print("There are no images. Please run the images function in the server module.")
+        input()
+        pass
+    else:
+        print("Showing images")
+        os.system("start images/images.html")
+        print("Done.")
+        input()
+
+
 def main():
-    possible_choices = ["1"]
+    possible_choices = ["1", "2"]
     choice = 0
     while choice not in possible_choices:
         clear()
@@ -52,6 +66,8 @@ def main():
     clear()
     if choice == "1":
         test()
+    elif choice == "2":
+        get_images()
 
 
 if __name__ == "__main__":

@@ -3,6 +3,7 @@ import fileio.fileio as files
 import random
 import os
 import statistics
+import pasteboard.pastey as pastey
 
 
 test_url = "https://www.york.ac.uk/teaching/cws/wws/webpage1.html"
@@ -31,12 +32,26 @@ def print_choices():
     print("""
   1 ) Test
   2 ) Web Test
+  3 ) Get Images
   """)
+
+
+def get_images():
+    while True:
+        url, code = pastey.get_picture_url(delay=1)
+        if url == "":
+            print(f"[ERROR] url : {code} does not exist")
+            continue
+        if not files.is_file_name_in_directory("images"):
+            files.create_directory("images")
+        with open("images/images.html", "a+") as file:
+            print(url)
+            file.write(f"<img src={url}></img>\n")
 
 
 def test():
     choice = 0
-    possible_choices = ["1", "2"]
+    possible_choices = ["1", "2", "3"]
     while choice not in possible_choices:
         print("What would you like to do?")
         print_choices()
@@ -48,6 +63,8 @@ def test():
         print("Done")
     elif choice == "2":
         web_test()
+    elif choice == "3":
+        get_images()
 
     clear()
 
