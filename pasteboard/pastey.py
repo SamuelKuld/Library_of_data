@@ -22,14 +22,31 @@ def get_picture_url(delay=0):
         result = requests.get(generate_url(".png", code)[0])
         if result.status_code == 404:
             return "", code
+    elif result.status_code not in [304, 200]:
+        print(f"Status code : {result.status_code} ; on : {code}")
+        input()
+        return "", code
 
     return url, code
 
 
 def test():
     start = time.time()
-    for i in range(10):
-        print(get_picture_url())
+    time.sleep(1)
+    url, code = "https://gcdn.pbrd.co/images/" + \
+        "r7FCP9vdpPEi" + ".png", "r7FCP9vdpPEi"
+    result = requests.get(url)
+    if result.status_code == 404:
+        result = requests.get(generate_url(".png", code)[0])
+        if result.status_code == 404:
+            return "", code
+    elif result.status_code not in [304, 200]:
+        print(f"Status code : {result.status_code} ; on : {url}")
+        input()
+        url, code = "", code
+
+    url, code = url, code
+    print(url)
     print(time.time() - start)
 
 

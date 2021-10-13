@@ -1,9 +1,12 @@
 import web_data.puller as puller
 import fileio.fileio as files
+import pasteboard.pastey as pastey
+import weather.weather as weather
+import time
 import random
 import os
+import pprint
 import statistics
-import pasteboard.pastey as pastey
 
 
 test_url = "https://www.york.ac.uk/teaching/cws/wws/webpage1.html"
@@ -33,7 +36,14 @@ def print_choices():
   1 ) Test
   2 ) Web Test
   3 ) Get Images
+  4 ) Get Weather Data
   """)
+
+
+def web_test(url=test_url):
+    data_sheet = puller.get_all_elements_in_page(url)
+    [print(data.text) for data in data_sheet]
+    print("done")
 
 
 def get_images():
@@ -49,9 +59,22 @@ def get_images():
             file.write(f"<img src={url}></img>\n")
 
 
+def weather_data_loop():
+    if not files.is_file_in_directory(name='weather.dat', directory='weather/'):
+        files.create_file("weather.dat", 'weather/', contents={})
+    data = files.read_file("weather.dat", directory='weather/')
+    while True:
+        start = time.time()
+        data[time.time()] = {"temperature": weather.get_temp(),
+                             "feels-like": weather.get_feels_like()}
+        files.create_file('weather.dat', 'weather/', data)
+        pprint.pprint(data, indent=2)
+        time.sleep(60 - (time.time() - start))
+
+
 def test():
     choice = 0
-    possible_choices = ["1", "2", "3"]
+    possible_choices = ["1", "2", "3", "4"]
     while choice not in possible_choices:
         print("What would you like to do?")
         print_choices()
@@ -65,14 +88,10 @@ def test():
         web_test()
     elif choice == "3":
         get_images()
+    elif choice == "4":
+        weather_data_loop()
 
     clear()
-
-
-def web_test(url=test_url):
-    data_sheet = puller.get_all_elements_in_page(url)
-    [print(data.text) for data in data_sheet]
-    print("done")
 
 
 def call():

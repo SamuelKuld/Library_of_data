@@ -1,6 +1,10 @@
 import shutil
 import os
 import pickle
+import sys
+
+# Need to do this in order to save and read the weather data loop.
+sys.setrecursionlimit(3000)
 
 
 def find_file(name="untitled.txt", directory=os.getcwd()):
@@ -36,20 +40,46 @@ def create_directory(name, directory=os.getcwd()):
 
 
 def create_file(name, directory=os.getcwd(), contents=""):
-    if "\\" != directory[-2::]:
+    if "\\" != directory[-2::] and "/" != directory[-1]:
         if type(contents) == type(""):
             with open(directory + "\\" + name, "w+") as file:
                 file.write(contents)
         else:
             with open(directory + "\\" + name, "wb+") as file:
                 pickle.dump(contents, file)
+                return
+    elif "/" != directory[-1::]:
+        if type(contents) == type(""):
+            with open(directory + "/" + name, "w+") as file:
+                file.write(contents)
+        else:
+            with open(directory + "/" + name, "wb+") as file:
+                pickle.dump(contents, file)
     else:
         if type(contents) == type(""):
             with open(directory + name, "w+") as file:
                 file.write(contents)
         else:
-            with open(directory + name, "wb +") as file:
+            with open(directory + name, "wb+") as file:
                 pickle.dump(contents, file)
+
+
+def read_file(name, directory=os.getcwd(), type={}):
+    try:
+        if "\\" != directory[-2::] and "/" != directory[-1]:
+            with open(directory+"\\" + name, "rb") as file:
+                data = pickle.load(file)
+            return data
+        elif "/" != directory[-1::]:
+            with open(directory+"/" + name, "rb") as file:
+                data = pickle.load(file)
+            return data
+        else:
+            with open(directory + name, "rb") as file:
+                data = pickle.load(file)
+            return data
+    except:
+        return type
 
 
 class File():
