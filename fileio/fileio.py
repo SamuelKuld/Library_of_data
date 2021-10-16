@@ -3,7 +3,7 @@ import os
 import pickle
 import sys
 
-# Need to do this in order to save and read the weather data loop.
+# Need to do this in order to save and read the weather data.
 sys.setrecursionlimit(3000)
 
 
@@ -40,15 +40,8 @@ def create_directory(name, directory=os.getcwd()):
 
 
 def create_file(name, directory=os.getcwd(), contents=""):
-    if "\\" != directory[-2::] and "/" != directory[-1]:
-        if type(contents) == type(""):
-            with open(directory + "\\" + name, "w+") as file:
-                file.write(contents)
-        else:
-            with open(directory + "\\" + name, "wb+") as file:
-                pickle.dump(contents, file)
-                return
-    elif "/" != directory[-1::]:
+    directory = directory.replace("\\", "/")
+    if "/" != directory[-1::]:
         if type(contents) == type(""):
             with open(directory + "/" + name, "w+") as file:
                 file.write(contents)
@@ -65,12 +58,9 @@ def create_file(name, directory=os.getcwd(), contents=""):
 
 
 def read_file(name, directory=os.getcwd(), type={}):
+    directory = directory.replace("\\", "/")
     try:
-        if "\\" != directory[-2::] and "/" != directory[-1]:
-            with open(directory+"\\" + name, "rb") as file:
-                data = pickle.load(file)
-            return data
-        elif "/" != directory[-1::]:
+        if "/" != directory[-1::]:
             with open(directory+"/" + name, "rb") as file:
                 data = pickle.load(file)
             return data
@@ -95,3 +85,28 @@ class File():
 
     def is_file_in_directory(self):
         return is_file_in_directory(self.name, self.directory)
+
+
+def test():
+    print("Testing Creating a directory")
+    create_directory("Joe")
+    print("Created directory successfully")
+    print("Testing creating a file using relative directory (without slashes) and string")
+    create_file("joe_text.txt", directory="Joe", contents="Test")
+    print("Created file")
+    print("Creating file using relative directory (with newlines) and non-string")
+    create_file("joe_data.dat", directory="joe\\", contents={"text": "Test"})
+    print("Created file")
+    print("Reading joe_text.txt using os.getcwd() + joe (without slashes)")
+    data = read_file("joe_text.txt", directory=os.getcwd() + "Joe", type="")
+    print(f"Read {data}")
+    print("Reading joe_data.dat using relative directory with new lines")
+    data = read_file("joe_data.dat", directory="Joe", type="")
+    print(f"Read {data}")
+    print("Deleting tree")
+    shutil.rmtree("Joe")
+    input()
+
+
+if __name__ == "__main__":
+    test()

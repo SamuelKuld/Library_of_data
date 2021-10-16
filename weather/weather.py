@@ -1,4 +1,4 @@
-# Puller functions, can't do this any other way.
+# Puller functions
 import bs4
 import requests
 
@@ -55,10 +55,12 @@ def get_all_elements_in_page(url=test_url, page=""):
     return sheet
 
 
+# End of puller code
+
+
 weather_url = "https://www.wunderground.com/weather/us/ca/alturas"
 temperature_element = "wu-value wu-value-to"
 feels_like_element = ""
-# Test
 
 
 def get_temp(url=weather_url, page=""):
