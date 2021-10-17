@@ -5,3 +5,4 @@ __pycache__
 images
 weather.dat
 *.pyc
+fileio/__pycache__/fileio.cpython-39.pyc
