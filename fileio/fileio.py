@@ -61,15 +61,15 @@ def read_file(name, directory=os.getcwd(), type={}):
     directory = directory.replace("\\", "/")
     try:
 
-        try:
+        if ".txt" in name:
             if "/" != directory[-1::]:
                 with open(directory+"/" + name, "r") as file:
                     data = file.read()
             else:
-                with open(directory + name, "rb") as file:
+                with open(directory + name, "r") as file:
                     data = file.read()
             return data
-        except TypeError:
+        else:
             if "/" != directory[-1::]:
                 with open(directory+"/" + name, "rb") as file:
                     data = pickle.load(file)

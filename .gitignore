@@ -1,8 +1,10 @@
 *.dat
 *.txt
+*.pyc
 .VSCodeCounter
+.vscode
 __pycache__
 images
 weather.dat
-*.pyc
 fileio/__pycache__/fileio.cpython-39.pyc
+
