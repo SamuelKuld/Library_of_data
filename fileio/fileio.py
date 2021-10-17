@@ -60,15 +60,25 @@ def create_file(name, directory=os.getcwd(), contents=""):
 def read_file(name, directory=os.getcwd(), type={}):
     directory = directory.replace("\\", "/")
     try:
-        if "/" != directory[-1::]:
-            with open(directory+"/" + name, "rb") as file:
-                data = pickle.load(file)
+
+        try:
+            if "/" != directory[-1::]:
+                with open(directory+"/" + name, "r") as file:
+                    data = file.read()
+            else:
+                with open(directory + name, "rb") as file:
+                    data = file.read()
             return data
-        else:
-            with open(directory + name, "rb") as file:
-                data = pickle.load(file)
+        except TypeError:
+            if "/" != directory[-1::]:
+                with open(directory+"/" + name, "rb") as file:
+                    data = pickle.load(file)
+            else:
+                with open(directory + name, "rb") as file:
+                    data = pickle.load(file)
             return data
-    except:
+    except Exception as E:
+        print(str(E))
         return type
 
 
@@ -98,7 +108,7 @@ def test():
     create_file("joe_data.dat", directory="joe\\", contents={"text": "Test"})
     print("Created file")
     print("Reading joe_text.txt using os.getcwd() + joe (without slashes)")
-    data = read_file("joe_text.txt", directory=os.getcwd() + "Joe", type="")
+    data = read_file("joe_text.txt", directory=os.getcwd() + "\\Joe", type="")
     print(f"Read {data}")
     print("Reading joe_data.dat using relative directory with new lines")
     data = read_file("joe_data.dat", directory="Joe", type="")
