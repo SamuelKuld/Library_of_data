@@ -4,7 +4,7 @@ import pickle
 import sys
 
 # Need to do this in order to save and read the weather data.
-sys.setrecursionlimit(3000)
+sys.setrecursionlimit(3500)
 
 
 def find_file(name="untitled.txt", directory=os.getcwd()):
