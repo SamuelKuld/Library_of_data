@@ -68,7 +68,8 @@ def weather_data_loop():
         data[time.time()] = {"temperature": weather.get_temp(),
                              "feels-like": weather.get_feels_like()}
         files.create_file('weather.dat', 'weather/', data)
-        pprint.pprint(data, indent=2, depth=3)
+        # pprint.pprint(data, indent=2, depth=3)
+        print(len(data))
         time.sleep(60 - (time.time() - start))
 
 

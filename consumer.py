@@ -94,6 +94,7 @@ def get_weather():
               all ) Prints all data and statistics of data
               """)
         choice = input()
+        data = files.read_file("weather.dat", "weather/", type={})
         clear()
         if choice == "1":
             for key in data:
