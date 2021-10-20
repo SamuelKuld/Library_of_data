@@ -19,6 +19,10 @@ temperature_element = "wu-value wu-value-to"
 feels_like_element = ""
 
 
+def get_weather(weather_url=weather_url):
+    return get_webpage(weather_url)
+
+
 def get_temp(url=weather_url, page=""):
     if not bool(page):
         page = get_webpage(url)

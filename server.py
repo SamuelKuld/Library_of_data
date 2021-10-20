@@ -65,17 +65,43 @@ def weather_data_loop():
     data = files.read_file("weather.dat", directory='weather/')
     while True:
         start = time.time()
-        data[time.time()] = {"temperature": weather.get_temp(),
-                             "feels-like": weather.get_feels_like()}
+        weather_page = weather.get_weather()
+        temperature = weather.get_temp(page=weather_page)
+        felt_like = weather.get_feels_like(page=weather_page)
+
+        # Apparently sometimes the webpage doesn't calculate it?
+        # This basically allows us to skip over invalid data points and stat from the beginning, skipping the timer.
+        if felt_like == "--":
+            continue
+        elif temperature == "--":
+            continue
+        data[time.time()] = {"temperature": temperature,
+                             "feels-like": felt_like}
         files.create_file('weather.dat', 'weather/', data)
         # pprint.pprint(data, indent=2, depth=3)
         print(len(data))
         time.sleep(60 - (time.time() - start))
 
 
+def weather_cleaner():
+    proper_weather = {}
+    data = files.read_file("weather.dat", "weather/")
+    for key, value in data.items():
+        print(value)
+        if "--" not in value["feels-like"]:
+            proper_weather[key] = value
+        elif "--" not in value["temperature"]:
+            proper_weather[key] = value
+        else:
+            print(key, value, sep=" ")
+            input()
+            continue
+    files.create_file("weather.dat", "weather/", proper_weather)
+
+
 def test():
     choice = 0
-    possible_choices = ["1", "2", "3", "4"]
+    possible_choices = ["1", "2", "3", "4", "5"]
     while choice not in possible_choices:
         print("What would you like to do?")
         print_choices()
@@ -91,6 +117,8 @@ def test():
         get_images()
     elif choice == "4":
         weather_data_loop()
+    elif choice == "5":
+        weather_cleaner()
 
     clear()
 
