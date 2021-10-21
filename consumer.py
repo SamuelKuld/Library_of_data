@@ -5,6 +5,8 @@ import datetime
 import fileio.fileio as files
 import statistics
 import functools
+import numpy
+import scipy.stats
 
 
 def clear():
@@ -68,6 +70,15 @@ def get_weather():
             print(
                 f"DateTime : {get_datetime(key)}\nFelt Like : {data[key]['feels-like']}\nActual : {data[key]['temperature']}\n")
 
+    def get_average_difference_of_time(data):
+        previous_time = list(data.keys())[0]
+        avg_distance_list = []
+        for time_ in data:
+            avg_distance = (time_ - previous_time) / 2
+            previous_time = time_
+            avg_distance_list.append(avg_distance)
+        return sum(avg_distance_list) / len(avg_distance_list)
+
     def get_average_temperature(data):
         return statistics.mean([float(temp['temperature'])
                                 for temp in [value for key, value in data.items()]])
@@ -86,20 +97,27 @@ def get_weather():
 
     def get_summary_as_string(data):
         return '\n'.join((f"Total Data Points: {len(data)}",
-                          f"Timespan : {list(data.keys())[0] - list(data.keys())[-1]}s ",
-                          f"  M : or {(list(data.keys())[0] - list(data.keys())[-1])/60}m ",
-                          f"  H : or {(list(data.keys())[0] - list(data.keys())[-1])/3200}h.",
-                          f"Standard Deviation of Time (Allows you to see how long it measures temp)= 1 / {statistics.pstdev([key for key in data.keys()])} Seconds",
-                          f"  M : or 1 / {statistics.pstdev([key for key in data.keys()]) / 60} Minutes",
+                          f"Timespan : {list(data.keys())[-1] - list(data.keys())[0]}s ",
+                          f"  M : or {(list(data.keys())[-1] - list(data.keys())[0])/60}m ",
+                          f"  H : or {(list(data.keys())[-1] - list(data.keys())[0])/3600}h.",
+                          f"Average Distance of Time (Allows you to see how long it measures temp)= 1 / {get_average_difference_of_time(data)} Seconds",
+                          f"  M : or 1 / {get_average_difference_of_time(data) / 60} Minutes",
                           f"Standard Deviation of temperature : {get_standard_deviation_of_temp(data)}",
                           f"Standard Deviation of felt temperature : {get_standard_deviation_of_feeling(data)}",
                           f"Average Temperature : {get_average_temperature(data)}",
-                          f"Average Felt Temperature : {get_average_feeling_temperature(data)}",))  # Finish
+                          f"Average Felt Temperature : {get_average_feeling_temperature(data)}",
+                          f"Minimum Temperature : {min([value['temperature'] for key, value in data.items()])}",
+                          f"Max Temperature : {max([value['temperature'] for key, value in data.items()])}",
+                          f"Minimum Felt Temperature : {min([value['feels-like'] for key, value in data.items()])}",
+                          f"Max Felt Temperature : {max([value['feels-like'] for key, value in data.items()])}"))  # Finish
 
     def get_last_24_hours(data):
         day_data = {}
-        for key in data:
-            if key > time.time() - 24*60*60:  # 24 hours
+        start_time = time.time()
+        for key in list(data.keys())[::-1]:
+            """print(key)
+            print(time.time())"""
+            if start_time - key < 86400:  # 24 hours
                 day_data[key] = {
                     "temperature": data[key]["temperature"],
                     "feels-like": data[key]["feels-like"]
