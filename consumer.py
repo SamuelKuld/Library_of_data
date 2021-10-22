@@ -95,6 +95,15 @@ def get_weather():
         return statistics.pstdev([float(temp['feels-like'])
                                   for temp in [value for key, value in data.items()]])
 
+    def get_data_without_zero(data, key_):
+        data_without_zero = []
+        for key, value in data.items():
+            if value[key_] != "0":
+                data_without_zero.append(float(value[key_]))
+            else:
+                continue
+        return data_without_zero
+
     def get_summary_as_string(data):
         return '\n'.join((f"Total Data Points: {len(data)}",
                           f"Timespan : {list(data.keys())[-1] - list(data.keys())[0]}s ",
@@ -106,9 +115,9 @@ def get_weather():
                           f"Standard Deviation of felt temperature : {get_standard_deviation_of_feeling(data)}",
                           f"Average Temperature : {get_average_temperature(data)}",
                           f"Average Felt Temperature : {get_average_feeling_temperature(data)}",
-                          f"Minimum Temperature : {min([value['temperature'] for key, value in data.items()])}",
+                          f"Minimum Temperature : {min(get_data_without_zero(data, 'temperature'))}",
                           f"Max Temperature : {max([value['temperature'] for key, value in data.items()])}",
-                          f"Minimum Felt Temperature : {min([value['feels-like'] for key, value in data.items()])}",
+                          f"Minimum Felt Temperature : {min(get_data_without_zero(data, 'feels-like'))}",
                           f"Max Felt Temperature : {max([value['feels-like'] for key, value in data.items()])}"))  # Finish
 
     def get_last_24_hours(data):
