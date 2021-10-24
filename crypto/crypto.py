@@ -2,14 +2,6 @@ import bs4
 import sys
 from puller import *
 
-"""with open("/../web_data/puller.py", "r") as puller:
-    data = puller.read()
-with open("puller.py", "w+") as file:
-    file.write(data)
-from puller import *
-shutil.remove("puller.py")
-"""
-
 
 def get_crypto_link(name):
     return "https://coinmarketcap.com/currencies/" + name + "/"
@@ -30,19 +22,12 @@ def get_crypto_webpage_list(list_of_cryptos):
 def get_crypto_price(crypto):
     page = get_crypto_page(crypto)
     soup = bs4.BeautifulSoup(page, features="html.parser")
-    results = {}
     table = soup.find('table')
-    headers = []
-    for header in table.find_all("th"):
-        headers.append(header)
-    for row in table.find_all("tr"):
-        results.append()
-
-    headers = [header.text for header in table.find_all('th')]
-    results = [{headers[i]: cell for i, cell in enumerate(row.find_all('td'))}
-               for row in table.find_all('tr')]
-
-    print(results)
+    results = [[cell for i, cell in enumerate(row.find_all('td'))]
+               for row in table.find_all('tr')]  # Going to analyze this later because I am not entirely sure how it works
+    results = [i[0] for i in results]
+    print(results[0].text.replace("$", ""))
+    input()
 
 
 def test():
