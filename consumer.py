@@ -4,9 +4,6 @@ import time
 import datetime
 import fileio.fileio as files
 import statistics
-import functools
-import numpy
-import scipy.stats
 
 
 def clear():
@@ -105,11 +102,13 @@ def get_weather():
         return data_without_zero
 
     def get_summary_as_string(data):
-        return '\n'.join((f"Total Data Points: {len(data)}",
-                          f"Timespan : {list(data.keys())[-1] - list(data.keys())[0]}s ",
+        return '\n'.join((f"Date Collection Started: {get_datetime(list(data.keys())[0])}",
+                          f"Last day collected: {get_datetime(list(data.keys())[-1])}",
+                          f"Total Data Points: {len(data)}",
+                          f"Timespan: {list(data.keys())[-1] - list(data.keys())[0]}s ",
                           f"  M : or {(list(data.keys())[-1] - list(data.keys())[0])/60}m ",
                           f"  H : or {(list(data.keys())[-1] - list(data.keys())[0])/3600}h.",
-                          f"Average Distance of Time (Allows you to see how long it measures temp)= 1 / {get_average_difference_of_time(data)} Seconds",
+                          f"Average Distance of Time (Allows you to see how long it measures temp) = 1 / {get_average_difference_of_time(data)} Seconds",
                           f"  M : or 1 / {get_average_difference_of_time(data) / 60} Minutes",
                           f"Standard Deviation of temperature : {get_standard_deviation_of_temp(data)}",
                           f"Standard Deviation of felt temperature : {get_standard_deviation_of_feeling(data)}",
@@ -118,7 +117,7 @@ def get_weather():
                           f"Minimum Temperature : {min(get_data_without_zero(data, 'temperature'))}",
                           f"Max Temperature : {max([value['temperature'] for key, value in data.items()])}",
                           f"Minimum Felt Temperature : {min(get_data_without_zero(data, 'feels-like'))}",
-                          f"Max Felt Temperature : {max([value['feels-like'] for key, value in data.items()])}"))  # Finish
+                          f"Max Felt Temperature : {max([value['feels-like'] for key, value in data.items()])}"))
 
     def get_last_24_hours(data):
         day_data = {}
