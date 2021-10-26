@@ -22,16 +22,12 @@ def get_crypto_webpage_list(list_of_cryptos):
 def get_crypto_price(crypto):
     page = get_crypto_page(crypto)
     soup = bs4.BeautifulSoup(page, features="html.parser")
-    table = soup.find('table')
-    results = [[cell for i, cell in enumerate(row.find_all('td'))]
-               for row in table.find_all('tr')]  # Going to analyze this later because I am not entirely sure how it works
-    results = [i[0] for i in results]
-    print(results[0].text.replace("$", ""))
-    input()
+    price = soup.find(class_="priceValue").text.replace("$", "")
+    return float(price)
 
 
 def test():
-    get_crypto_price("dogecoin")
+    print(get_crypto_price("dogecoin"))
 
 
 if __name__ == '__main__':

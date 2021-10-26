@@ -5,7 +5,6 @@ import weather.weather as weather
 import time
 import random
 import os
-import pprint
 import statistics
 
 
@@ -78,7 +77,7 @@ def weather_data_loop():
         files.create_file('weather.dat', 'weather/', data)
         # pprint.pprint(data, indent=2, depth=3)
         print(len(data))
-        time.sleep(60)
+        time.sleep(15)
 
 
 def weather_cleaner():
