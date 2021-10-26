@@ -71,9 +71,7 @@ def weather_data_loop():
 
         # Apparently sometimes the webpage doesn't calculate it?
         # This basically allows us to skip over invalid data points and stat from the beginning, skipping the timer.
-        if felt_like == "--":
-            continue
-        elif temperature == "--":
+        if felt_like == "--" or temperature == "--":
             continue
         data[time.time()] = {"temperature": temperature,
                              "feels-like": felt_like}
