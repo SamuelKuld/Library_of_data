@@ -91,8 +91,6 @@ def get_last_24_hours(data):
     day_data = {}
     start_time = time.time()
     for key in list(data.keys())[::-1]:
-        """print(key)
-        print(time.time())"""
         if start_time - key < 86400:  # 24 hours
             day_data[key] = {
                 "temperature": data[key]["temperature"],
@@ -105,7 +103,7 @@ def get_last_24_hours(data):
             # point of necessary iteration.
             break
 
-    day_data = {key: data[key] for key in list(day_data.keys())[::-1]}
+    day_data = {key: value for key, value in list(day_data.items())[::-1]}
     return get_summary_as_string(day_data)
 
 
