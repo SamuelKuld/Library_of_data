@@ -24,7 +24,8 @@ But with full expectation for this to go nowhere, here's my first well thought o
 
 - #### Weather:
 
-* I understand the layout can be a bit daunting. There's a bunch of folders and it seems only 2 utilizable files that are both extremely incomprehensive without the internal files. But upon running a few files you'll notice that nothing will pop up except for the `consumer.py` and `server.py` files.
+- - I understand the layout can be a bit daunting. There's a bunch of folders and it seems only 2 utilizable files that are both extremely incomprehensive without the internal files. But upon running a few files you'll notice that nothing will pop up except for the `consumer.py` and `server.py` files.
+
 * These are the two primary files in the program. They take all those subfiles and puts them into data and then saves it. Once that data is collected, it can be read and analyzed by the `consumer.py` file. The `server.py` file pulls the data to be read and "consumed" by `consumer.py`.
 
 * Upon opening `consumer.py` you'll try to read some form of data. This is met with either an error or a message stating that you didn't have any data inputted and that you have to run `server.py`. This is because since you didn't have any data already in the file system, it simply couldn't extrapolate or analyze any given data. In order to resolve this, simply just choose one of the given options in `server.py` and wait for a bit as the data is loaded.
