@@ -67,13 +67,15 @@ def weather_data_loop():
         weather_page = weather.get_weather()
         temperature = weather.get_temp(page=weather_page)
         felt_like = weather.get_feels_like(page=weather_page)
+        precipitation = weather.get_precipitation(page=weather_page)
 
         # Apparently sometimes the webpage doesn't calculate it?
         # This basically allows us to skip over invalid data points and stat from the beginning, skipping the timer.
         if felt_like == "--" or temperature == "--":
             continue
         data[time.time()] = {"temperature": temperature,
-                             "feels-like": felt_like}
+                             "feels-like": felt_like,
+                             "precipitation": precipitation}
         files.create_file('weather.dat', 'weather/', data)
         # pprint.pprint(data, indent=2, depth=3)
         print(len(data))

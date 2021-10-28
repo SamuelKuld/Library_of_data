@@ -36,9 +36,19 @@ def get_feels_like(url=weather_url, page=""):
     return str(bs4.BeautifulSoup(str(soup.findChildren(class_="feels-like")), features="html.parser").find(class_="temp").contents[0].replace("°", ""))
 
 
+def get_precipitation(url=weather_url, page=""):
+    if not page:
+        page = get_webpage(url)
+    soup = bs4.BeautifulSoup(page, features="html.parser")
+    return float(soup.find(type="rain").find(class_="wu-value wu-value-to").contents[0])
+
+
 def test():
+    """
     print(get_feels_like())
-    print(get_temp())
+    print(get_temp())"""
+
+    print(get_precipitation())
 
 
 if __name__ == '__main__':
